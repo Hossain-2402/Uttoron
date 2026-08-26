@@ -4,7 +4,8 @@ import api from "../api";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Auth.css";
 
-export default function SignIn() {
+export default function SignUp() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -19,11 +20,11 @@ export default function SignIn() {
     setLoading(true);
 
     try {
-      const res = await api.post("/auth/signin", { email, password });
+      const res = await api.post("/auth/signup", { name, email, password });
       login(res.data.user, res.data.token);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Could not sign in");
+      setError(err.response?.data?.message || "Could not create account");
     } finally {
       setLoading(false);
     }
@@ -32,13 +33,18 @@ export default function SignIn() {
   return (
     <div className="auth-page">
       <div className="auth-card card">
-        <span className="eyebrow">Welcome back</span>
-        <h1>Sign in</h1>
-        <p className="auth-sub">Pick up your recovery plan where you left off.</p>
+        <span className="eyebrow">Start rebuilding</span>
+        <h1>Create your account</h1>
+        <p className="auth-sub">It takes two minutes. No bank details required.</p>
 
         {error && <div className="auth-error">{error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-field">
+            <label htmlFor="name">Full name</label>
+            <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+          </div>
+
           <div className="form-field">
             <label htmlFor="email">Email</label>
             <input
@@ -57,30 +63,20 @@ export default function SignIn() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              minLength={6}
               required
             />
           </div>
 
           <button type="submit" className="btn btn-accent btn-block" disabled={loading}>
-            {loading ? "Signing in..." : "Sign in"}
+            {loading ? "Creating account..." : "Create account"}
           </button>
         </form>
 
         <p className="auth-switch">
-          New to Uttoron? <Link to="/signup">Create an account</Link>
+          Already have an account? <Link to="/signin">Sign in</Link>
         </p>
       </div>
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
