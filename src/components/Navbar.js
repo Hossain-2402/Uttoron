@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "../styles/Navbar.css";
 
 export default function Navbar() {
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // close the mobile menu whenever the route changes
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname]);
@@ -21,6 +22,7 @@ export default function Navbar() {
   }, [menuOpen]);
 
   function handleLogout() {
+    logout();
     navigate("/");
   }
 
@@ -37,18 +39,27 @@ export default function Navbar() {
           Uttoron
         </Link>
 
-                  <nav className="nav-links">
+        {user ? (
+          <nav className="nav-links">
             <Link to="/dashboard">Dashboard</Link>
             <Link to="/add-income">Add Income</Link>
             <Link to="/add-expense">Add Expense</Link>
             <Link to="/current-status">Current Status</Link>
             <Link to="/history">History</Link>
-            <span className="nav-name">Hossain</span>
+            <span className="nav-name">{user.name.split(" ")[0]}</span>
             <button className="btn btn-outline nav-logout" onClick={handleLogout}>
               Sign out
             </button>
           </nav>
-        
+        ) : (
+          <nav className="nav-links">
+            <Link to="/signin">Sign in</Link>
+            <Link to="/signup" className="btn btn-accent">
+              Get started
+            </Link>
+          </nav>
+        )}
+
         <button
           className={menuOpen ? "nav-toggle open" : "nav-toggle"}
           onClick={() => setMenuOpen((prev) => !prev)}
@@ -62,21 +73,27 @@ export default function Navbar() {
       </div>
 
       <div className={menuOpen ? "nav-mobile open" : "nav-mobile"}>
-        
+        {user ? (
           <nav className="nav-mobile-links">
             <Link to="/dashboard">Dashboard</Link>
             <Link to="/add-income">Add Income</Link>
             <Link to="/add-expense">Add Expense</Link>
             <Link to="/current-status">Current Status</Link>
-            <Link to="/history">History</Link>
             <div className="nav-mobile-foot">
-              <span className="nav-name">Hossain</span>
+              <span className="nav-name">{user.name.split(" ")[0]}</span>
               <button className="btn btn-outline btn-block" onClick={handleLogout}>
                 Sign out
               </button>
             </div>
           </nav>
-
+        ) : (
+          <nav className="nav-mobile-links">
+            <Link to="/signin">Sign in</Link>
+            <Link to="/signup" className="btn btn-accent btn-block">
+              Get started
+            </Link>
+          </nav>
+        )}
       </div>
     </header>
   );
