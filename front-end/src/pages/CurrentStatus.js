@@ -74,7 +74,7 @@ export default function CurrentStatus() {
           </button>
         </form>
 
-        {status && (
+	        {status && (
           <div className="status-results">
             <div className="card result-card">
               <span className="eyebrow">Minimum survival budget</span>
@@ -108,7 +108,8 @@ export default function CurrentStatus() {
             </div>
           </div>
         )}
-      </div>
+
+	</div>
     </div>
   );
 }

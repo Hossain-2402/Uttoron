@@ -1,5 +1,5 @@
 {
-  "name": "front_end",
+  "name": "uttoron-frontend",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
@@ -36,5 +36,3 @@
     ]
   }
 }
-
-

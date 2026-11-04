@@ -28,7 +28,7 @@ export default function History() {
       setIncomes([]);
       api
         .get(`/expense?type=${filter}`)
-        .then((res) => setExpenses(res.data.expenses))
+        .then((res) => {console.log(res.data.expenses); setExpenses(res.data.expenses)})
         .catch(() => setError("Could not load your history"));
     }
   }, [filter]);
